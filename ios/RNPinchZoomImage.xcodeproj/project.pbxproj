@@ -11,7 +11,6 @@
 		901BF95B22964C560033292C /* RNPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 901BF95622964C560033292C /* RNPhotoView.m */; };
 		901BF95C22964C560033292C /* RNPinchZoomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 901BF95822964C560033292C /* RNPinchZoomImage.m */; };
 		901BF95D22964C560033292C /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 901BF95922964C560033292C /* MWTapDetectingView.m */; };
-		901BF967229652E80033292C /* MWTapDetectingFastImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 901BF966229652E80033292C /* MWTapDetectingFastImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,8 +35,6 @@
 		901BF95722964C560033292C /* RNPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPhotoView.h; sourceTree = "<group>"; };
 		901BF95822964C560033292C /* RNPinchZoomImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPinchZoomImage.m; sourceTree = "<group>"; };
 		901BF95922964C560033292C /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
-		901BF96522964F450033292C /* MWTapDetectingFastImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingFastImageView.h; sourceTree = "<group>"; };
-		901BF966229652E80033292C /* MWTapDetectingFastImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingFastImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +59,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				901BF966229652E80033292C /* MWTapDetectingFastImageView.m */,
-				901BF96522964F450033292C /* MWTapDetectingFastImageView.h */,
 				901BF95422964C560033292C /* MWTapDetectingImageView.h */,
 				901BF95222964C560033292C /* MWTapDetectingImageView.m */,
 				901BF95322964C560033292C /* MWTapDetectingView.h */,
@@ -133,7 +128,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				901BF967229652E80033292C /* MWTapDetectingFastImageView.m in Sources */,
 				901BF95B22964C560033292C /* RNPhotoView.m in Sources */,
 				901BF95D22964C560033292C /* MWTapDetectingView.m in Sources */,
 				901BF95A22964C560033292C /* MWTapDetectingImageView.m in Sources */,
@@ -232,6 +226,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -247,6 +242,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../react-native/React/**",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";

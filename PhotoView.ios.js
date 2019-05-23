@@ -45,10 +45,6 @@ export default class PhotoView extends Component {
             console.warn('source.uri should not be an empty string');
         }
 
-        if (this.props.src) {
-            console.warn('The <PhotoView> component requires a `source` property rather than `src`.');
-        }
-
         if (source && source.uri) {
             var {onLoadStart, onLoad, onLoadEnd, onProgress, onTap, onViewTap, onScale, ...props} = this.props;
 
@@ -61,7 +57,7 @@ export default class PhotoView extends Component {
                 onPhotoViewerViewTap: onViewTap,
                 onPhotoViewerScale: onScale,
                 ...props,
-                src: source,
+                source,
                 loadingIndicatorSrc: loadingIndicatorSource ? loadingIndicatorSource.uri : null,
             };
 
@@ -80,9 +76,9 @@ var cfg = {
         onPhotoViewerTap: true,
         onPhotoViewerViewTap: true,
         onPhotoViewerScale: true,
-        src: true,
+        source: true,
         loadingIndicatorSrc: true
     }
 };
 
-const RNPhotoView = requireNativeComponent('RNPhotoView', PhotoView, cfg);
+const RNPhotoView = requireNativeComponent('RNPinchZoomImage', PhotoView, cfg);

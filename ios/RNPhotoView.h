@@ -2,6 +2,7 @@
 #import <React/RCTComponent.h>
 #import "MWTapDetectingImageView.h"
 #import "MWTapDetectingView.h"
+#import <react-native-fast-image/FFFastImageSource.h>
 
 @class RCTBridge;
 
@@ -9,14 +10,12 @@
 
 #pragma mark - Data
 
-@property (nonatomic, strong) NSDictionary *source;
-@property (nonatomic, strong) NSDictionary *src;
+@property (nonatomic, strong) FFFastImageSource *source;
 @property (nonatomic, strong) NSString *loadingIndicatorSrc;
 @property (nonatomic, assign) NSInteger scale;
 @property (nonatomic, assign) CGFloat minZoomScale;
 @property (nonatomic, assign) CGFloat maxZoomScale;
 @property (nonatomic, assign) BOOL autoAdjustContentInset;
-
 #pragma mark - Block
 
 @property (nonatomic, copy) RCTDirectEventBlock onPhotoViewerScale;

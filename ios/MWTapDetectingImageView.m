@@ -10,6 +10,13 @@
 
 @implementation MWTapDetectingImageView
 
+- (id)init {
+    if ((self = [super init])) {
+        self.userInteractionEnabled = YES;
+    }
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame {
 	if ((self = [super initWithFrame:frame])) {
 		self.userInteractionEnabled = YES;

@@ -64,14 +64,20 @@
 
 - (void)handleDoubleTap:(CGPoint)touchPoint {
     // Zoom
+    CGSize boundSize=self.bounds.size;
+    if(boundSize.width==0||boundSize.height==0)
+    {
+        return;
+    }
     if (self.zoomScale != self.minimumZoomScale && self.zoomScale != [self initialZoomScaleWithMinScale]) {
         // Zoom out
         [self setZoomScale:self.minimumZoomScale animated:YES];
     } else {
-        // Zoom in to twice the size
-        CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
-        CGFloat xsize = self.bounds.size.width / newZoomScale;
-        CGFloat ysize = self.bounds.size.height / newZoomScale;
+        CGFloat newZoomScale = ((_maxZoomScale + _minZoomScale) / 2);
+        CGFloat currentBoundWidth=boundSize.width;
+        CGFloat currentBoundHeight=boundSize.height;
+        CGFloat xsize = currentBoundWidth / newZoomScale;
+        CGFloat ysize = currentBoundHeight / newZoomScale;
         [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
     }
 }
@@ -143,12 +149,16 @@
     CGFloat zoomScale = self.minimumZoomScale;
     if (_photoImageView) {
         // Zoom image to fill if the aspect ratios are fairly similar
-        CGSize boundsSize = self.bounds.size;
+        CGSize boundSize = self.bounds.size;
+        if(boundSize.width==0||boundSize.height==0)
+        {
+            return  _minZoomScale;
+        }
         CGSize imageSize = _photoImageView.image.size;
-        CGFloat boundsAR = boundsSize.width / boundsSize.height;
+        CGFloat boundsAR = boundSize.width / boundSize.height;
         CGFloat imageAR = imageSize.width / imageSize.height;
-        CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
-        CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
+        CGFloat xScale = boundSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
+        CGFloat yScale = boundSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
         // Zooms standard portrait images on a 3.5in screen but not on a 4in screen.
         if (ABS(boundsAR - imageAR) < 0.17) {
             zoomScale = MAX(xScale, yScale);
@@ -167,15 +177,14 @@
     self.zoomScale = 1;
     
     // Bail if no image
-    if (_photoImageView.image == nil) return;
+    CGSize boundsSize = self.bounds.size;
+    if (_photoImageView.image == nil||boundsSize.width==0||boundsSize.height==0) return;
     
     // Reset position
     _photoImageView.frame = CGRectMake(0, 0, _photoImageView.frame.size.width, _photoImageView.frame.size.height);
     
     // Sizes
-    CGSize boundsSize = self.bounds.size;
     CGSize imageSize = _photoImageView.image.size;
-    
     // Calculate Min
     CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
@@ -227,6 +236,14 @@
     // Center the image as it becomes smaller than the size of the screen
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = _photoImageView.frame;
+    if(frameToCenter.size.width==0)
+    {
+        frameToCenter.size.width=boundsSize.width;
+    }
+    if(frameToCenter.size.height==0)
+    {
+        frameToCenter.size.height=boundsSize.height;
+    }
     
     // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {
@@ -244,7 +261,17 @@
     
     // Center
     if (!CGRectEqualToRect(_photoImageView.frame, frameToCenter))
+    {
         _photoImageView.frame = frameToCenter;
+    }
+    //If zoom to min, not allow scroll
+    if(self.zoomScale <= self.minimumZoomScale)
+    {
+        self.scrollEnabled=NO;
+    }
+    else{
+        self.scrollEnabled=YES;
+    }
     if (_onPhotoViewerScale) {
         _onPhotoViewerScale(@{
                               @"scale": @(self.zoomScale),
@@ -284,59 +311,8 @@
 
 #pragma mark - Setter
 
-- (void)setSource:(NSDictionary *)source {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if ([_source isEqualToDictionary:source]) {
-            return;
-        }
-        NSString *uri = source[@"uri"];
-        if (!uri) {
-            return;
-        }
-        _source = source;
-        NSURL *imageURL = [NSURL URLWithString:uri];
-        UIImage *image = RCTImageFromLocalAssetURL(imageURL);
-        if (image) { // if local image
-            [self setImage:image];
-            return;
-        }
-
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:imageURL];
-
-        __weak RNPhotoView *weakSelf = self;
-        if (_onPhotoViewerLoadStart) {
-            _onPhotoViewerLoadStart(nil);
-        }
-
-        // use default values from [imageLoader loadImageWithURLRequest:request callback:callback] method
-        [_bridge.imageLoader loadImageWithURLRequest:request
-                                        size:CGSizeZero
-                                       scale:1
-                                     clipped:YES
-                                  resizeMode:RCTResizeModeStretch
-                               progressBlock:^(int64_t progress, int64_t total) {
-                                   if (_onPhotoViewerProgress) {
-                                       _onPhotoViewerProgress(@{
-                                           @"loaded": @((double)progress),
-                                           @"total": @((double)total),
-                                       });
-                                   }
-                               }
-                            partialLoadBlock:nil
-                             completionBlock:^(NSError *error, UIImage *image) {
-                                                if (image) {
-                                                    dispatch_sync(dispatch_get_main_queue(), ^{
-                                                        [weakSelf setImage:image];
-                                                    });
-                                                    if (_onPhotoViewerLoad) {
-                                                        _onPhotoViewerLoad(nil);
-                                                    }
-                                                }
-                                                if (_onPhotoViewerLoadEnd) {
-                                                    _onPhotoViewerLoadEnd(nil);
-                                                }
-                                            }];
-    });
+- (void)setSource:(FFFastImageSource *)source {
+    [_photoImageView setSource:source];
 }
 
 - (void)setLoadingIndicatorSrc:(NSString *)loadingIndicatorSrc {
@@ -387,8 +363,8 @@
     self.backgroundColor = [UIColor clearColor];
     self.delegate = self;
     self.decelerationRate = UIScrollViewDecelerationRateFast;
-    self.showsVerticalScrollIndicator = NO;
-    self.showsHorizontalScrollIndicator = NO;
+    self.showsVerticalScrollIndicator = YES;
+    self.showsHorizontalScrollIndicator = YES;
     if (@available(iOS 11.0, *)) {
         self.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
     }
@@ -401,11 +377,38 @@
     [self addSubview:_tapView];
     
     // Image view
-    _photoImageView = [[MWTapDetectingImageView alloc] initWithFrame:self.bounds];
-    _photoImageView.backgroundColor = [UIColor clearColor];
-    _photoImageView.contentMode = UIViewContentModeCenter;
+    _photoImageView = [[MWTapDetectingImageView alloc] init];
+    CGRect _photoFrame= CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    _photoImageView.frame=_photoFrame;
+    _photoImageView.backgroundColor = [UIColor redColor];
+    __block RNPhotoView * blockSelf=self;
+    [_photoImageView setOnFastImageLoad:^(NSDictionary *body){
+        [blockSelf onImageLoaded:body];
+    }];
+
+    [_photoImageView setResizeMode:RCTResizeModeContain];
     _photoImageView.tapDelegate = self;
     [self addSubview:_photoImageView];
+}
+
+- (void) onImageLoaded:(NSDictionary*)body
+{
+    UIImage *image=_photoImageView.image;
+    self.zoomScale = 1;
+    self.contentSize = CGSizeMake(0, 0);
+    CGRect photoImageViewFrame;
+    photoImageViewFrame.origin = CGPointZero;
+    photoImageViewFrame.size = image.size;
+    _photoImageView.frame = photoImageViewFrame;
+    self.contentSize = photoImageViewFrame.size;
+    
+    // Set zoom to minimum zoom
+    [self setMaxMinZoomScalesForCurrentBounds];
+    [self setNeedsLayout];
+    if(_onPhotoViewerLoad)
+    {
+        _onPhotoViewerLoad(body);
+    }
 }
 
 - (void)setAutoAdjustContentInset:(BOOL)autoAdjustContentInset
@@ -422,6 +425,13 @@
         }
     }
     _autoAdjustContentInset=autoAdjustContentInset;
+}
+
+- (void)reactSetFrame:(CGRect)frame
+{
+    [super reactSetFrame:frame];
+    [self setMaxMinZoomScalesForCurrentBounds];
+    [self layoutIfNeeded];
 }
 
 @end

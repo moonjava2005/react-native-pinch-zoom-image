@@ -1,5 +1,6 @@
 #import "RNPinchZoomImage.h"
 #import "RNPhotoView.h"
+#import <react-native-fast-image/FFFastImageSource.h>
 
 @implementation RNPinchZoomImage
 
@@ -13,7 +14,7 @@ RCT_EXPORT_MODULE()
     return [[RNPhotoView alloc] initWithBridge:self.bridge];
 }
 
-RCT_REMAP_VIEW_PROPERTY(src, source, NSDictionary)
+RCT_EXPORT_VIEW_PROPERTY(source, FFFastImageSource)
 RCT_EXPORT_VIEW_PROPERTY(loadingIndicatorSrc, NSString)
 
 RCT_REMAP_VIEW_PROPERTY(maximumZoomScale, maxZoomScale, CGFloat)
