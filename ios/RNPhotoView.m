@@ -14,11 +14,9 @@
 
 @property (nonatomic, strong) MWTapDetectingImageView *photoImageView;
 @property (nonatomic, strong) MWTapDetectingView *tapView;
-@property (nonatomic, strong) UIImageView *loadingImageView;
 
 #pragma mark - Data
 
-@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *loadingImage;
 
 @end
@@ -280,72 +278,10 @@
     }
 }
 
-#pragma mark - Image
-
-// Get and display image
-- (void)displayWithImage:(UIImage*)image {
-    if (image && !_photoImageView.image) {
-        
-        // Reset
-//        self.maximumZoomScale = 1;
-//        self.minimumZoomScale = 1;
-        self.zoomScale = 1;
-        self.contentSize = CGSizeMake(0, 0);
-        
-        // Set image
-        _photoImageView.image = image;
-        _photoImageView.hidden = NO;
-        
-        // Setup photo frame
-        CGRect photoImageViewFrame;
-        photoImageViewFrame.origin = CGPointZero;
-        photoImageViewFrame.size = image.size;
-        _photoImageView.frame = photoImageViewFrame;
-        self.contentSize = photoImageViewFrame.size;
-        
-        // Set zoom to minimum zoom
-        [self setMaxMinZoomScalesForCurrentBounds];
-        [self setNeedsLayout];
-    }
-}
-
 #pragma mark - Setter
 
 - (void)setSource:(FFFastImageSource *)source {
     [_photoImageView setSource:source];
-}
-
-- (void)setLoadingIndicatorSrc:(NSString *)loadingIndicatorSrc {
-    if (!loadingIndicatorSrc) {
-        return;
-    }
-    if ([_loadingIndicatorSrc isEqualToString:loadingIndicatorSrc]) {
-        return;
-    }
-    _loadingIndicatorSrc = loadingIndicatorSrc;
-    NSURL *imageURL = [NSURL URLWithString:_loadingIndicatorSrc];
-    UIImage *image = RCTImageFromLocalAssetURL(imageURL);
-    if (image) {
-        [self setLoadingImage:image];
-    }
-}
-
-- (void)setImage:(UIImage *)image {
-    _image = image;
-    [self displayWithImage:_image];
-}
-
-- (void)setLoadingImage:(UIImage *)loadingImage {
-    _loadingImage = loadingImage;
-    if (_loadingImageView) {
-        [_loadingImageView setImage:_loadingImage];
-    } else {
-        _loadingImageView = [[UIImageView alloc] initWithImage:_loadingImage];
-        _loadingImageView.center = self.center;
-        _loadingImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        _loadingImageView.backgroundColor = [UIColor clearColor];
-        [_tapView addSubview:_loadingImageView];
-    }
 }
 
 - (void)setScale:(NSInteger)scale {
@@ -385,7 +321,7 @@
     [_photoImageView setOnFastImageLoad:^(NSDictionary *body){
         [blockSelf onImageLoaded:body];
     }];
-
+    
     [_photoImageView setResizeMode:RCTResizeModeContain];
     _photoImageView.tapDelegate = self;
     [self addSubview:_photoImageView];
