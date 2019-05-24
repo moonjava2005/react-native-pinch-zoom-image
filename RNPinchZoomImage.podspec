@@ -9,6 +9,8 @@ Pod::Spec.new do |s|
   s.license      = package['license']
   s.author             = package['author']
   s.platform     = :ios, "9.0"
+  s.summary       = "Component supports view image with pinch and zoom action"
+  s.homepage      = "https://github.com/moonjava2005/react-native-pinch-zoom-image"
   s.source       = { :git => "git://github.com/moonjava2005/react-native-pinch-zoom-image.git", :tag => s.version }
   s.source_files  = "ios/**/*.{h,m}"
   s.requires_arc = true

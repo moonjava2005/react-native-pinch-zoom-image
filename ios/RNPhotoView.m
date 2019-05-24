@@ -380,7 +380,7 @@
     _photoImageView = [[MWTapDetectingImageView alloc] init];
     CGRect _photoFrame= CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     _photoImageView.frame=_photoFrame;
-    _photoImageView.backgroundColor = [UIColor redColor];
+    _photoImageView.backgroundColor = [UIColor clearColor];
     __block RNPhotoView * blockSelf=self;
     [_photoImageView setOnFastImageLoad:^(NSDictionary *body){
         [blockSelf onImageLoaded:body];
@@ -389,6 +389,28 @@
     [_photoImageView setResizeMode:RCTResizeModeContain];
     _photoImageView.tapDelegate = self;
     [self addSubview:_photoImageView];
+}
+
+- (void)setOnPhotoViewerLoadStart:(int)onPhotoViewerLoadStart
+{
+    if(_photoImageView!=nil)
+    {
+        [_photoImageView setOnFastImageLoadStart:onPhotoViewerLoadStart];
+    }
+}
+- (void)setOnPhotoViewerLoadEnd:(int)onPhotoViewerLoadEnd
+{
+    if(_photoImageView!=nil)
+    {
+        [_photoImageView setOnFastImageLoadEnd:onPhotoViewerLoadEnd];
+    }
+}
+- (void)setOnPhotoViewerProgress:(int)onPhotoViewerProgress
+{
+    if(_photoImageView!=nil)
+    {
+        [_photoImageView setOnFastImageProgress:onPhotoViewerProgress];
+    }
 }
 
 - (void) onImageLoaded:(NSDictionary*)body
