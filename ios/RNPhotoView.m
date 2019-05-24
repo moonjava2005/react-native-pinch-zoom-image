@@ -391,21 +391,21 @@
     [self addSubview:_photoImageView];
 }
 
-- (void)setOnPhotoViewerLoadStart:(int)onPhotoViewerLoadStart
+- (void)setOnPhotoViewerLoadStart:(RCTDirectEventBlock)onPhotoViewerLoadStart
 {
     if(_photoImageView!=nil)
     {
         [_photoImageView setOnFastImageLoadStart:onPhotoViewerLoadStart];
     }
 }
-- (void)setOnPhotoViewerLoadEnd:(int)onPhotoViewerLoadEnd
+- (void)setOnPhotoViewerLoadEnd:(RCTDirectEventBlock)onPhotoViewerLoadEnd
 {
     if(_photoImageView!=nil)
     {
         [_photoImageView setOnFastImageLoadEnd:onPhotoViewerLoadEnd];
     }
 }
-- (void)setOnPhotoViewerProgress:(int)onPhotoViewerProgress
+- (void)setOnPhotoViewerProgress:(RCTDirectEventBlock)onPhotoViewerProgress
 {
     if(_photoImageView!=nil)
     {

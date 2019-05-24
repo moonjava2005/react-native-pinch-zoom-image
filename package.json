@@ -1,6 +1,6 @@
 {
   "name": "react-native-pinch-zoom-image",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Pinch to zoom and pan image",
   "main": "index.js",
   "scripts": {
