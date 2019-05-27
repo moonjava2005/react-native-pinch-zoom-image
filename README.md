@@ -3,6 +3,8 @@
 
 ## Getting started
 
+This module is based on [react-native-photo-view](https://github.com/alwx/react-native-photo-view). It seems "dead" adn we make some modifications to solve some problems
+
 `$ npm install react-native-pinch-zoom-image --save`
 
 Or
@@ -18,7 +20,9 @@ Or
 
 #### iOS
 
-No action required
+1. Add this line to your podfile
+  pod `RNPinchZoomImage`, path: `../node_modules/react-native-pinch-zoom-image`
+2. Run `pod install`
 
 #### Android
 
@@ -38,8 +42,8 @@ No action required
 ## Dependencies
 Install and link [react-native-fast-image](https://github.com/DylanVann/react-native-fast-image). To install and link it, run:
 ```
-yarn add react-native-gesture-handler
-react-native link react-native-gesture-handler
+yarn add react-native-fast-image
+react-native link react-native-fast-image
 ```
 
 ## Usage

@@ -64,7 +64,7 @@ export default class PhotoView extends Component {
                 loadingIndicatorSrc: loadingIndicatorSource ? loadingIndicatorSource.uri : null,
             };
 
-            return <PhotoViewAndroid {...nativeProps} />
+            return <PinchZoomImageAndroid {...nativeProps} />
         }
         return null
     }
@@ -84,4 +84,4 @@ var cfg = {
     }
 };
 
-const PhotoViewAndroid = requireNativeComponent('PhotoViewAndroid', PhotoView, cfg);
+const PinchZoomImageAndroid = requireNativeComponent('PhotoViewAndroid', PhotoView, cfg);

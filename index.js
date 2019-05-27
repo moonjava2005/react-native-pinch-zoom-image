@@ -1,2 +1,3 @@
-import PhotoView from './PhotoView'
-export default PhotoView
+import PinchZoomImage from './PinchZoomImage'
+
+export default PinchZoomImage
