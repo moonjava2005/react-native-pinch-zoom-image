@@ -49,7 +49,7 @@ react-native link react-native-fast-image
 ## Usage
 ```javascript
 import React,{Component} from 'react';
-import PinchZoomLayout from 'react-native-pinch-zoom-image';
+import PinchZoomImage from 'react-native-pinch-zoom-image';
 import {
     Image
 } from 'react-native';
@@ -57,7 +57,7 @@ import {
 export default class ImageViewer extends Component {
     pinZoomLayoutRef=React.createRef();
     render() {
-       return(<PinchZoomLayout
+       return(<PinchZoomImage
                           style={{flex:1}}
                           ref={this.pinZoomLayoutRef}
                           onZoom={this.onZoom}
@@ -69,7 +69,7 @@ export default class ImageViewer extends Component {
                                   uri:'https://facebook.github.io/react-native/img/header_logo.png'
                               }}
                           />
-                      </PinchZoomLayout>)
+                      </PinchZoomImage>)
     }
     
     onZoom=event=>{

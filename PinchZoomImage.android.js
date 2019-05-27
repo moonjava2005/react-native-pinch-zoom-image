@@ -84,4 +84,4 @@ var cfg = {
     }
 };
 
-const PinchZoomImageAndroid = requireNativeComponent('PhotoViewAndroid', PhotoView, cfg);
+const PinchZoomImageAndroid = requireNativeComponent('RNPinchZoomImage', PhotoView, cfg);
