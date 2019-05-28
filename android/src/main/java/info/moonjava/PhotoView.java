@@ -1,6 +1,7 @@
 package info.moonjava;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -11,7 +12,9 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
+import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -46,8 +49,7 @@ public class PhotoView extends PhotoDraweeView implements RequestListener<Drawab
     public void maybeUpdateView(PipelineDraweeControllerBuilder builder) {
         if (builder != null) {
             GenericDraweeHierarchy hierarchy = getHierarchy();
-            hierarchy.setFadeDuration(200);
-
+            hierarchy.setFadeDuration(100);
             mDraweeControllerBuilder = builder;
             mDraweeControllerBuilder.setAutoPlayAnimations(true);
             mDraweeControllerBuilder.setOldController(getController());
@@ -107,8 +109,17 @@ public class PhotoView extends PhotoDraweeView implements RequestListener<Drawab
 
     @Override
     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+        final EventDispatcher eventDispatcher = ((ReactContext) getContext())
+                .getNativeModule(UIManagerModule.class).getEventDispatcher();
         final int imageWidth = resource.getIntrinsicWidth();
         final int imageHeight = resource.getIntrinsicHeight();
+        setEnableDraweeMatrix(true);
+        eventDispatcher.dispatchEvent(
+                new ImageEvent(getId(), ImageEvent.ON_LOAD)
+        );
+        eventDispatcher.dispatchEvent(
+                new ImageEvent(getId(), ImageEvent.ON_LOAD_END)
+        );
         update(imageWidth, imageHeight);
         return false;
     }

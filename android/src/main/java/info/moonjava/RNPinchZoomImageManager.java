@@ -105,6 +105,7 @@ public class RNPinchZoomImageManager extends SimpleViewManager<PhotoView> implem
         eventEmitter.receiveEvent(viewId, REACT_ON_LOAD_START_EVENT, new WritableNativeMap());
 
         if (requestManager != null) {
+            view.setEnableDraweeMatrix(false);
             requestManager
                     // This will make this work for remote and local images. e.g.
                     //    - file:///
