@@ -153,18 +153,19 @@
             return  _minZoomScale;
         }
         CGSize imageSize = _photoImageView.image.size;
-        CGFloat boundsAR = boundSize.width / boundSize.height;
-        CGFloat imageAR = imageSize.width / imageSize.height;
+//        CGFloat boundRatio = boundSize.width / boundSize.height;
+//        CGFloat imageRatio = imageSize.width / imageSize.height;
         CGFloat xScale = boundSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
         CGFloat yScale = boundSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
         // Zooms standard portrait images on a 3.5in screen but not on a 4in screen.
-        if (ABS(boundsAR - imageAR) < 0.17) {
-            zoomScale = MAX(xScale, yScale);
+      
+            zoomScale = MIN(xScale, yScale);
             // Ensure we don't zoom in or out too far, just in case
             zoomScale = MIN(MAX(self.minimumZoomScale, zoomScale), self.maximumZoomScale);
-        }
+      
     }
     return zoomScale;
+//  return 0.5;
 }
 
 - (void)setMaxMinZoomScalesForCurrentBounds {
@@ -202,7 +203,8 @@
     self.minimumZoomScale = minScale;
     
     // Initial zoom
-    self.zoomScale = [self initialZoomScaleWithMinScale];
+    CGFloat _initMinZoomScale=[self initialZoomScaleWithMinScale];
+    self.zoomScale = _initMinZoomScale;
     
     // If we're zooming to fill then centralise
     if (self.zoomScale != minScale) {
@@ -299,8 +301,8 @@
     self.backgroundColor = [UIColor clearColor];
     self.delegate = self;
     self.decelerationRate = UIScrollViewDecelerationRateFast;
-    self.showsVerticalScrollIndicator = YES;
-    self.showsHorizontalScrollIndicator = YES;
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
     if (@available(iOS 11.0, *)) {
         self.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
     }
