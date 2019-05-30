@@ -303,6 +303,7 @@
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
+    self.scrollsToTop = NO;
     if (@available(iOS 11.0, *)) {
         self.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
     }
