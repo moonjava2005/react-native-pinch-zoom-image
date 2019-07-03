@@ -153,19 +153,19 @@
             return  _minZoomScale;
         }
         CGSize imageSize = _photoImageView.image.size;
-//        CGFloat boundRatio = boundSize.width / boundSize.height;
-//        CGFloat imageRatio = imageSize.width / imageSize.height;
+        //        CGFloat boundRatio = boundSize.width / boundSize.height;
+        //        CGFloat imageRatio = imageSize.width / imageSize.height;
         CGFloat xScale = boundSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
         CGFloat yScale = boundSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
         // Zooms standard portrait images on a 3.5in screen but not on a 4in screen.
-      
-            zoomScale = MIN(xScale, yScale);
-            // Ensure we don't zoom in or out too far, just in case
-            zoomScale = MIN(MAX(self.minimumZoomScale, zoomScale), self.maximumZoomScale);
-      
+        
+        zoomScale = MIN(xScale, yScale);
+        // Ensure we don't zoom in or out too far, just in case
+        zoomScale = MIN(MAX(self.minimumZoomScale, zoomScale), self.maximumZoomScale);
+        
     }
     return zoomScale;
-//  return 0.5;
+    //  return 0.5;
 }
 
 - (void)setMaxMinZoomScalesForCurrentBounds {
@@ -298,12 +298,12 @@
     _maxZoomScale = 3.0;
     
     // Setup
+    //    self.backgroundColor = [UIColor redColor];
     self.backgroundColor = [UIColor clearColor];
     self.delegate = self;
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
-    self.scrollsToTop = NO;
     if (@available(iOS 11.0, *)) {
         self.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
     }
@@ -319,6 +319,7 @@
     _photoImageView = [[MWTapDetectingImageView alloc] init];
     CGRect _photoFrame= CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     _photoImageView.frame=_photoFrame;
+    //    _photoImageView.backgroundColor = [UIColor greenColor];
     _photoImageView.backgroundColor = [UIColor clearColor];
     __block RNPhotoView * blockSelf=self;
     [_photoImageView setOnFastImageLoad:^(NSDictionary *body){
@@ -393,6 +394,13 @@
     [super reactSetFrame:frame];
     [self setMaxMinZoomScalesForCurrentBounds];
     [self layoutIfNeeded];
+}
+
+- (void)didSetProps:(NSArray<NSString *> *)changedProps
+{
+    if (_photoImageView!=nil) {
+        [_photoImageView didSetProps:changedProps];
+    }
 }
 
 @end
