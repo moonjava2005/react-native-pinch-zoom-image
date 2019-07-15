@@ -1,6 +1,6 @@
 #import "RNPinchZoomImage.h"
 #import "RNPhotoView.h"
-#import <react-native-fast-image/FFFastImageSource.h>
+#import <RNFastImage/FFFastImageSource.h>
 
 @implementation RNPinchZoomImage
 

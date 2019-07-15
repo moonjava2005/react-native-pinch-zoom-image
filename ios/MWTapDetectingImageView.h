@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import <react-native-fast-image/FFFastImageView.h>
+#import <RNFastImage/FFFastImageView.h>
 
 @protocol MWTapDetectingImageViewDelegate;
 

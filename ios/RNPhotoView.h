@@ -2,7 +2,7 @@
 #import <React/RCTComponent.h>
 #import "MWTapDetectingImageView.h"
 #import "MWTapDetectingView.h"
-#import <react-native-fast-image/FFFastImageSource.h>
+#import <RNFastImage/FFFastImageSource.h>
 
 @class RCTBridge;
 
