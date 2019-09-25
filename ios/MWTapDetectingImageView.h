@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import <RNFastImage/FFFastImageView.h>
+#import "FFFastImageView.h"
 
 @protocol MWTapDetectingImageViewDelegate;
 

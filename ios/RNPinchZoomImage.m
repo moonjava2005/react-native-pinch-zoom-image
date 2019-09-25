@@ -1,6 +1,6 @@
 #import "RNPinchZoomImage.h"
 #import "RNPhotoView.h"
-#import <RNFastImage/FFFastImageSource.h>
+#import "FFFastImageSource.h"
 
 @implementation RNPinchZoomImage
 
